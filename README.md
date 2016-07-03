@@ -9,11 +9,11 @@ See [https://www.hughrundle.net/tinfoil](https://www.hughrundle.net/tinfoil) for
 # Dependencies
 
 * Meteor
-** meteor-platform
-** accounts-password
-** matteodem:easy-search
-** accounts-ui
-** mylar:platform
+* meteor-platform
+* accounts-password
+* matteodem:easy-search
+* accounts-ui
+* mylar:platform
 
 # Licence
 
