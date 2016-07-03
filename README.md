@@ -4,7 +4,7 @@ This is a demo system for a client-side encrypted library circulation system. it
 
 It’s written in JavaScript using Meteor and Mylar.
 
-See https://www.hughrundle.net/tinfoil for more information and background.
+See [https://www.hughrundle.net/tinfoil](https://www.hughrundle.net/tinfoil) for more information and background.
 
 # Dependencies
 
