@@ -1,0 +1,238 @@
+<!-- Header showing basic account details -->
+<template name="headerInfo">
+	<header>
+	{{#if currentUser}}
+		<div class="header-login">
+			Logged in as {{>loginButtons}}
+			<br>with ID {{currentUser._id}}
+		
+			<h1>Tinfoil Library Circulation System</h1>
+		  	<p>Trust nobody.</p>
+		 </div>
+	{{else}}
+		<div class="header-no-login">
+			<p>Welcome to Tinfoil.</p>
+			<p>It will make a lot more sense if you sign in or sign up.</p>
+			<p>You can use a fake name and email - I won't use or pass them on anyway.</p>
+			|
+			<br>
+			|
+			<br>
+			V
+			<br>
+			<br>
+			{{>loginButtons}}
+		</div>
+	{{/if}}
+	</header>
+</template>
+
+<!-- navigation buttons at top -->
+<template name="mainNavigation">
+ <div class="buttons">
+ 	<button class="navButton1 {{activeScreen1}}" id="button1">Search Collection</button>
+ 	{{#if currentUser}}
+	 	<button class="navButton2 {{activeScreen2}}" id="button2">Staff Tasks</button>
+	 	<button class="navButton3 {{activeScreen3}}" id="button3">Member Record</button>
+	 	<button class="navButton4 {{activeScreen4}}" id="button4">Issue Items</button>
+	 	<button class="navButton5 {{activeScreen5}}" id="button5">Return Items</button>
+	 {{/if}}	
+	 	<button class="navButton6 {{activeScreen6}}" id="button6">Browse Items</button>
+  	<button class="navButton7 {{activeScreen7}}" id="button7">You might also like...</button>	 
+ </div>
+<div>
+	<div class=" screens {{activeScreen1}}">
+	{{>searchForItems}}
+	</div>
+	<div class="screens {{activeScreen2}}">
+	{{>staffView}}
+	</div>
+	<div class="screens {{activeScreen3}}">
+	{{>memberView}}
+	</div>
+	<div class="screens {{activeScreen4}}">
+	{{>loanItems}}
+	</div>
+	<div class="screens {{activeScreen5}}">
+	{{>returnItems}}
+	</div>
+	<div class="screens {{activeScreen6}}">
+	{{>browseItems}}
+	</div>
+	<div class="screens {{activeScreen7}}">
+	{{>youMightAlsoLike}}
+	</div>	
+</div>
+</template>
+
+<!-- default search screen to Find items -->
+<template name="searchForItems">
+	<p>Super simple search functionality. For this demo, all this does is allow you to see what's in the collection, though you could easily build something more sophisticated.</p>
+	{{> esInput index="books" placeholder="Search..."}}
+	<br>	
+	<div>
+		{{#esEach index="books"}}
+			<p>	Title: {{title}}<br>
+				author: {{author}}<br>
+				subject: {{subject}}
+			</p>
+			{{/esEach}}
+	</div>
+	{{> esLoadMoreButton index="books"}}
+	{{#ifEsHasNoResults index="books"}}
+	<div>No results, sorry!</div>
+	{{/ifEsHasNoResults}}
+	{{#ifEsIsSearching index="books"}}
+	<div>loading...</div>
+	{{/ifEsIsSearching}}
+	<p></p>
+</template>
+
+<!-- Screen to return items -->
+<template name="returnItems">
+	<p></p>
+	<form class="search">
+		<input type="text" name="returnItem" placeholder="Return...">
+		<br>
+		<input type="submit" value="Return" class="sub-but">
+		<p></p>
+	</form>
+</template>
+
+<!-- Staff view to find users and add items-->
+<template name="staffView">
+	<h2>Staff View</H2>
+{{>addItemForm}}
+</template>
+
+<!-- Staff screen to add items to the collection -->
+<template name="addItemForm" class="add-item">
+	<p>You can add items to the collection here. Try it!</p>
+{{#if currentUser}}
+	<form>
+		<fieldset class="search">
+		<legend>Add item to collection</legend>
+		<label>Title: </label><input type="text" name="itemTitle">
+		<br>
+		<label>Author: </label><input type="text" name="itemAuthor">
+		<br>
+		<label>Subject: </label><input type="text" name="itemSubject">
+		<br>
+		<input type="submit" value="Add record" class="sub-but">
+	</fieldset>
+	</form>
+{{/if}}
+</template>
+
+<!-- Member screen showing items on loan and loan history-->
+<template name="memberView">
+	{{#if currentUser}}
+	<h2>Hello {{currentUser.username}}</h2>
+	<p>This is the user record. Everything you see in the white boxes below that links back to your user account is encrypted on the server, so these onloan items and your loan history can only be linked to you on the client (for this demo, in the browser), when you are logged in.</p>
+	<p>The server can however see the following totals for items due on certain dates:</p>
+	<ul>
+	{{#each myDueDates}}
+		<li>{{stringify date}} : {{total}}</li>
+	{{/each}}
+	</ul>
+	<p>We can use this info to send reminder notications. The totals are checked and updated when you view this screen again.</p>
+	<hr/>
+	 <button class="send-loans">Finish Borrowing</button>
+	 <p>Pressing this button triggers the 'borrowed with' process. We're simulating what would normally happen when an issuing session finishes (e.g. when a user logs out of the loans kiosk).</p>
+	 <hr />
+	<div class="item-list">
+		<h3>Your Current Loans</h3>
+			<div>Total loans: {{showTotalItems}}</div>
+			<br>
+			{{> onloanItems}}		
+	</div>
+		<div class="item-list">
+		<h3>Your Previous Loans</h3>
+		{{> myitemsdetails}} <br>
+	</div>
+	{{else}}
+	<p></p>
+	Please sign in to see your details.
+	{{/if}}
+</template>
+
+<template name="onloanItems">
+	{{#each my.borrowers}}
+	<div>
+		Title: <strong>{{getItemTitle this}}</strong><br>
+		Author: <strong>{{getItemAuthor this}}</strong><br>
+		Due: <strong>{{getItemDue this}}</strong><br>
+	</div>
+	<br>
+	{{/each}}
+</template>
+
+<!-- Shows every item ever issued to this member -->
+<template name="myitemsdetails">
+	{{#each getOldItems.loans}}
+	{{#with getItemInfo this}}
+	<div>
+		Title: <strong>{{title}}</strong><br>
+		Author: <strong>{{author}}</strong><br>
+		<br>
+	</div>
+	{{/with}}
+	{{/each}}
+</template>
+
+<!-- Member screen allowing issue of items-->
+<template name="loanItems">
+	<div class="search loans">
+		<form>
+			<input type="text" name="issueItem" placeholder="enter the ID number...">
+			<br>
+			<input type="submit" value="Borrow it!" class="sub-but">
+		</form>
+	</div>
+</template>
+
+<template name="browseItems">
+<!-- Show every item in the collection -->	
+	<div class="item-list">
+	{{#each showItems}}
+		<div class="item-listing">
+			<strong>Title:</strong> {{title}}
+			{{#if multiAuthor this}}
+				<br><strong>Authors:</strong><br> 
+				{{#each author}} 
+					&nbsp;&nbsp;&nbsp;&nbsp;{{this}}<br>
+				{{/each}}
+			{{else}}
+				<br><strong>Author:</strong> {{author}}<br>
+			{{/if}}
+			<strong>Subject:</strong> {{subject}}
+			<br>
+			<br><strong>ID: </strong><span class="fw">{{_id}}</span>&nbsp;
+			{{#if onloanTo}}
+			<span class="loan-status-on">on loan</span>
+			{{else}}
+			<span class="loan-status-available">available</span>
+			{{/if}}
+		</div>
+	{{/each}}
+	</div>
+</template>
+
+<template name="youMightAlsoLike">
+	<p>This section shows a basic example of the functionality we have available for recommendations and item associations despite not knowing anyone's borrowing history. We can make a 'you might like' association based on which items have been borrowed together. The example here is pretty crude, but it's possible to make something much more sophisticated, even including personalisation. More info is available in the VALA paper.</p>
+	<hr />
+
+	{{#each showItems}}
+	<div>
+		Title:<span class="ymal-title">{{title}}</span>
+		<br>
+		You might also like:<span class="friends">{{getBestMatch this}}</span>
+		<br>
+		This book has been borrowed with:<br>
+		{{#each loanedWith}}
+		<div class="friends">{{getLoanedWithTitles this}}</div>
+		{{/each}}
+	</div>
+	<br>
+	{{/each}}
+</template>
