@@ -35,7 +35,6 @@ Meteor.startup(function(){
 	});
 
 // When each button is pressed, make the relevant selected screen active
-
 Template.mainNavigation.events({
 	'click .navButton1' : function(){
 		Session.set("selectedScreen", "active1");

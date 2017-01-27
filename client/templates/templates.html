@@ -1,6 +1,6 @@
 <!-- Header showing basic account details -->
 <template name="headerInfo">
-	<header>
+	<header class="header">
 	{{#if currentUser}}
 		<div class="header-login">
 			Logged in as {{>loginButtons}}
@@ -11,16 +11,17 @@
 		 </div>
 	{{else}}
 		<div class="header-no-login">
-			<p>Welcome to Tinfoil.</p>
-			<p>It will make a lot more sense if you sign in or sign up.</p>
-			<p>You can use a fake name and email - I won't use or pass them on anyway.</p>
-			|
-			<br>
-			|
-			<br>
-			V
-			<br>
-			<br>
+			<div class="intro">
+				<p>Welcome to Tinfoil.</p>
+				<p>It will make a lot more sense if you sign in or sign up.</p>
+				<p>You can use a fake name and email - I won't use or pass them on anyway.</p>
+				|
+				<br>
+				|
+				<br>
+				V
+				<br>
+			</div>
 			{{>loginButtons}}
 		</div>
 	{{/if}}
@@ -200,14 +201,14 @@
 			{{#if multiAuthor this}}
 				<br><strong>Authors:</strong><br> 
 				{{#each author}} 
-					&nbsp;&nbsp;&nbsp;&nbsp;{{this}}<br>
+					{{this}}<br>
 				{{/each}}
 			{{else}}
 				<br><strong>Author:</strong> {{author}}<br>
 			{{/if}}
 			<strong>Subject:</strong> {{subject}}
 			<br>
-			<br><strong>ID: </strong><span class="fw">{{_id}}</span>&nbsp;
+			<span class="item-id">{{_id}}</span>
 			{{#if onloanTo}}
 			<span class="loan-status-on">on loan</span>
 			{{else}}
@@ -226,11 +227,11 @@
 	<div>
 		Title:<span class="ymal-title">{{title}}</span>
 		<br>
-		You might also like:<span class="friends">{{getBestMatch this}}</span>
+		You might also like:<span class="similar">{{getBestMatch this}}</span>
 		<br>
 		This book has been borrowed with:<br>
 		{{#each loanedWith}}
-		<div class="friends">{{getLoanedWithTitles this}}</div>
+		<div class="similar">{{getLoanedWithTitles this}}</div>
 		{{/each}}
 	</div>
 	<br>
