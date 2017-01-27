@@ -28,18 +28,22 @@ Any images, font files etc you want to use should be placed in a `public` direct
 ## Install locally
 
 [Install Meteor](https://www.meteor.com/install)
+
 Create your app directory:
 
-`meteor create myapp --release 1.1.3`
+`meteor create myapp --release 1.1.3`<br>
 `cd myapp`
 
 Add packages:
-`meteor add meteor-platform`
-`meteor add accounts-password`
-`meteor add mateodem:easy-search`
-`meteor add accounts-ui`
+
+`meteor add meteor-platform`<br>
+`meteor add accounts-password`<br>
+`meteor add mateodem:easy-search`<br>
+`meteor add accounts-ui`<br>
 `meteor add mylar:platform`
+
 Run:
+
 `meteor` 
 
 ## Licence
