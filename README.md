@@ -34,9 +34,13 @@ Any images, font files etc you want to use should be placed in a `public` direct
 `cd myapp`
 * add packages:
 `meteor add meteor-platform`
+
 `meteor add accounts-password`
+
 `meteor add mateodem:easy-search`
+
 `meteor add accounts-ui`
+
 `meteor add mylar:platform`
 
 * Run:
