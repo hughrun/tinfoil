@@ -95,11 +95,8 @@ Template.mainNavigation.events({
 					var uName = Principal.user().name;
 					var uId = Principal.user().id;
 					// Insert replacement user (we have to do this because we can't "update" using Mylar)
-					Principal.lookup([new PrincAttr("usr", userPrinc)], uName, function (principal) {
-																							// THIS CURRENTLY ONLY WORKS BECAUSE WE'RE USING 'INSECURE'						
+					Principal.lookup([new PrincAttr("usr", userPrinc)], uName, function (principal) {					
 						TinfoilUsers.insert({usrPrinc: uId, user: currentUser, borrowers: myBorrowers, dates: myDates});
-
-
 					});
 				});	
 			}
